@@ -95,51 +95,6 @@ public class CsvReader {
 
                 }
 
-//                if(!cancionesRepe.contains(snapshot)){
-//                    BinarySearchTree<Integer,String> arbolRepe = new BinarySearchTreeImpl<>();
-//                    cancionesRepe.put(snapshot,arbolRepe);
-//                }
-//                BinarySearchTree<Integer,String> arbolRepe = cancionesRepe.search(snapshot);
-//                if(arbolRepe.find(nombre)==null){
-//                    arbolRepe.insert(1,nombre);
-//                }else {
-//                    int value=arbolRepe.findKey(nombre)+1;
-//                    arbolRepe.replace(nombre,value);
-//                }
-//
-//                if(!cancionesRepe.contains(snapshot)){
-//                    HashTable<String,Integer> cancion = new HashTableImpl<>(51);
-//                    cancion.put(nombre,1);
-//                    cancionesRepe.put(snapshot,cancion);
-//                }else if(!cancionesRepe.search(snapshot).contains(nombre)){
-//                    cancionesRepe.search(snapshot).put(nombre,1);
-//                }else {
-//                    HashTable<String,Integer> can = cancionesRepe.search(snapshot);
-//                    int value=can.search(nombre)+1;
-//                    can.changeValue(nombre,value);
-//                }
-//
-//                if(!artistasRepe.contains(snapshot)){
-//                    HashTable<String,Integer> artista = new HashTableImpl<>(51);
-//                    artista.put(nombre,1);
-//                    artistasRepe.put(snapshot,artista);
-//                } else if (!artistasRepe.search(snapshot).contains(nombre)) {
-//                    artistasRepe.search(snapshot).put(nombre,1);
-//                }else {
-//                    HashTable<String,Integer> artista = artistasRepe.search(snapshot);
-//                    int value=artista.search(nombre)+1;
-//                    artista.changeValue(nombre,value);
-//                }
-
-
-//                if(cR.find(nombre)==null){
-//                    cR.insert(nombre,1); //aparece 1 vez
-//                }else {
-//                    int value = cR.find(nombre) + 1;
-//                    cR.replace(nombre,value);
-//                }
-
-
             }
         } catch (IOException | NumberFormatException | ParseException i ) {
             i.printStackTrace();

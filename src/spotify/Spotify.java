@@ -76,34 +76,37 @@ public class Spotify {
 
     public void top50CanRep(Date fecha2){
         HashTable<String,Integer> cancionesRepe=new HashTableImpl<>(300);
-
-        HashTable<String, BinarySearchTree<Integer, Song>> paises2= fechas.search(fecha2);
-        for(int i=0; i<paises2.size();i++){
-            if(paises2.get(i)!=null){
-                MyList<Song> can= paises2.get(i).getValue().inOrderValue();
-                for (int j=0; j<can.size();j++){
-                    String nombre= can.get(j).getName();
-                    if(!cancionesRepe.contains(nombre)){
-                        cancionesRepe.put(nombre,1);
-                    }else{
-                        int value= cancionesRepe.search(nombre)+1;
-                        cancionesRepe.changeValue(nombre,value);
+        if(fechas.contains(fecha2)) {
+            HashTable<String, BinarySearchTree<Integer, Song>> paises2 = fechas.search(fecha2);
+            for (int i = 0; i < paises2.size(); i++) {
+                if (paises2.get(i) != null) {
+                    MyList<Song> can = paises2.get(i).getValue().inOrderValue();
+                    for (int j = 0; j < can.size(); j++) {
+                        String nombre = can.get(j).getName();
+                        if (!cancionesRepe.contains(nombre)) {
+                            cancionesRepe.put(nombre, 1);
+                        } else {
+                            int value = cancionesRepe.search(nombre) + 1;
+                            cancionesRepe.changeValue(nombre, value);
+                        }
                     }
                 }
             }
-        }
-        BinarySearchTree<Integer,String> ordenados= new BinarySearchTreeImpl<>();
-        for (int i = 0; i < (cancionesRepe.size() - 1); i++) {
-            NodeHash<String, Integer> nodo = cancionesRepe.get(i);
-            if (nodo != null) {
-                ordenados.insert(nodo.getValue(), nodo.getKey());
+            BinarySearchTree<Integer, String> ordenados = new BinarySearchTreeImpl<>();
+            for (int i = 0; i < (cancionesRepe.size() - 1); i++) {
+                NodeHash<String, Integer> nodo = cancionesRepe.get(i);
+                if (nodo != null) {
+                    ordenados.insert(nodo.getValue(), nodo.getKey());
+                }
             }
-        }
-        MyList<String> lista = ordenados.inOrderValue();
-        int contador = 0;
-        for (int i = (lista.size() - 1); i > (lista.size() - 6); i--) {
-            contador++;
-            System.out.println((contador) + ") " + lista.get(i));
+            MyList<String> lista = ordenados.inOrderValue();
+            int contador = 0;
+            for (int i = (lista.size() - 1); i > (lista.size() - 6); i--) {
+                contador++;
+                System.out.println((contador) + ") " + lista.get(i));
+            }
+        }else {
+            System.out.println("no se encontraton datos para la fecha: " + fecha2);
         }
     }
 
@@ -136,16 +139,18 @@ public class Spotify {
             }
         }
 
-        BinarySearchTree<Integer, String> ordenados3 = new BinarySearchTreeImpl<>();
-        for (int i = 0; i < artistasRep.size(); i++) {
-            NodeHash<String, Integer> nodo = artistasRep.get(i);
-            if (nodo != null) {
-                ordenados3.insert(nodo.getValue(), nodo.getKey());
+        if(artistasRep.size()!=0) {
+            BinarySearchTree<Integer, String> ordenados3 = new BinarySearchTreeImpl<>();
+            for (int i = 0; i < artistasRep.size(); i++) {
+                NodeHash<String, Integer> nodo = artistasRep.get(i);
+                if (nodo != null) {
+                    ordenados3.insert(nodo.getValue(), nodo.getKey());
+                }
             }
-        }
-        MyList<String> lista3 = ordenados3.inOrderValue();
-        for (int i = (lista3.size()-1); i > (lista3.size()-8); i--) {
-            System.out.println(lista3.get(i));
+            MyList<String> lista3 = ordenados3.inOrderValue();
+            for (int i = (lista3.size() - 1); i > (lista3.size() - 8); i--) {
+                System.out.println(lista3.get(i));
+            }
         }
     }
 
@@ -183,6 +188,7 @@ public class Spotify {
             }
         }else {
             System.out.println("no se encontraton datos para la fecha: " + fecha);
+            return -1;
         }
         return veces;
     }
@@ -228,9 +234,11 @@ public class Spotify {
             }
             if (!paso){
                 System.out.println("No se encontraron datos para las fechas dadas");
+                return -1;
             }
         }else{
             System.out.println("No se encontraron datos para las fechas dadas");
+            return -1;
         }
 
         return cantidad;
@@ -270,7 +278,9 @@ public class Spotify {
                 Date fecha = spoti.askFecha(sc);
                 String artista = spoti.askArtista(sc);
                 int veces = spoti.contarArtista(fecha, artista);
-                System.out.println("El artista " + artista + " aparece " + veces + " veces en el top 50 en la fecha " + fecha);
+                if(veces!=-1) {
+                    System.out.println("El artista " + artista + " aparece " + veces + " veces en el top 50 en la fecha " + fecha);
+                }
                 volver(sc, spoti);
 
             case 5:
@@ -283,7 +293,9 @@ public class Spotify {
                 System.out.println("Ingrese la fecha de fin del rango que quiere consultar (YYYY-MM-DD):");
                 Date fechaFin = spoti.askFecha(sc);
                 int cantidad = spoti.contarCancionesTempo(tempo1,tempo2,fechaInicio,fechaFin);
-                System.out.println("La cantidad de canciones con un tempo entre "+ tempo1 + " y "+tempo2+ " entre las fechas " +fechaInicio+ " y "+fechaFin+ " es: " + cantidad);
+                if(cantidad!=-1) {
+                    System.out.println("La cantidad de canciones con un tempo entre " + tempo1 + " y " + tempo2 + " entre las fechas " + fechaInicio + " y " + fechaFin + " es: " + cantidad);
+                }
                 volver(sc, spoti);
 
             default:
