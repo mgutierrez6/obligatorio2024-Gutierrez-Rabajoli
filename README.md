@@ -1,6 +1,6 @@
 # obligatorio2024-Gutierrez-Rabajoli
-**Descripción de los procesos de carga y realización de reportes:
-**
+Descripción de los procesos de carga y realización de reportes:
+
 Para procesar los datos, nosotras decidimos utilizar la función readSongsFromCsv, para la cual nos creamos una clase CsvReader.
 Dentro de la función, creamos un Hash de la forma: HashTable<Date, HashTable<String, BinarySearchTree<Integer,Song>>> para almacenar los datos que vayamos recolectando, el primer hash va a tener como key una fecha del “snapshot” de la canción (cuando se obtuvo esa información) y su value será otro hash, con key país y value un árbol binario de búsqueda, el cual tiene en su nodo como key la posición de la canción en el ranking y como value el objeto cancion que recuperamos haciendo lo que viene a continuación.
 
@@ -36,8 +36,7 @@ Para cargar los datos al hash fecha que mencionamos al inicio, nos fijamos que e
 Si ya existía esa fecha, la buscamos y dentro nos fijamos que exista el país, si no existe lo creamos y también el árbol ranking.
 Por último, si todo ya existe, agregamos una canción al árbol ranking; pero primero tenemos que fijarnos que no exista un nodo con la misma key, ya que en el archivo csv, hay un par de rankings que repiten número. Si eso pasa, entra en un while que va a asignarle el número que le sigue.
 
-**Medición de eficiencia de la aplicación (cantidad de memoria RAM consumida y tiempo de ejecución promedio):
-**
+Medición de eficiencia de la aplicación (cantidad de memoria RAM consumida y tiempo de ejecución promedio):
 Para medir el tiempo de ejecución y la cantidad de memoria consumida, ya que no sabíamos muy bien cómo hacerlo, buscamos información de internet y hablando con compañeros, averiguamos cómo implementar métodos para calcular estos datos.
 
  Para medir la memoria utilizada, se utiliza el método "getUsedMemory." Este método obtiene la memoria total actualmente ("totalMemory") y la memoria libre disponible ("freeMemory"). La diferencia entre estos dos valores da la cantidad de memoria utilizada.
