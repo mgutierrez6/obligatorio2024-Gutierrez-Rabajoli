@@ -186,11 +186,7 @@ public class Spotify {
     }
 
     public int contarArtista(Scanner sc,Date fecha, String artista) {
-//        long totalTime = 0;
-//        long memoryBefore = getUsedMemory();
-
         int veces = 0;
-//        long startIterTime = System.nanoTime();
         if (fechas.contains(fecha)) {
             HashTable<String, BinarySearchTree<Integer, Song>> paises = fechas.search(fecha);
 
@@ -219,15 +215,6 @@ public class Spotify {
                     }
                 }
             }
-//            long endTime = System.nanoTime();
-//            long iterExecutionTime = endTime - startIterTime;
-//            totalTime += iterExecutionTime;
-//            System.out.println("\nDesea ver el timpo de ejecucion y memoria consumida? \n 1- Si \n 2- No");
-//            int opcion = sc.nextInt();
-//            if(opcion==1){
-//                long memoryAfter = getUsedMemory();
-//                manageContarArtista(fecha,artista, totalTime, memoryBefore,memoryAfter);
-//            }
         }else {
             System.out.println("No se encontraron datos para la fecha: " + fecha);
             return -1;
@@ -236,6 +223,7 @@ public class Spotify {
     }
 
     public int contarCancionesTempo(Scanner sc,double tempo1, double tempo2,Date fechaInicio, Date fechaFin){
+
         int cantidad = 0;
         if (tempo1>tempo2){
             double tempo = tempo1;
@@ -331,9 +319,23 @@ public class Spotify {
                 Date fecha = spoti.askFecha(sc);
                 System.out.println("Ingrese el artista que quiere consultar:");
                 String artista = spoti.askArtista(sc);
+
+                long totalTime = 0;
+                long memoryBefore = getUsedMemory();
+                long startIterTime = System.nanoTime();
                 int veces = spoti.contarArtista(sc, fecha, artista);
+                long endTime = System.nanoTime();
+                long iterExecutionTime = endTime - startIterTime;
+                totalTime += iterExecutionTime;
+
                 if(veces!=-1) {
                     System.out.println("El artista " + artista + " aparece " + veces + " veces en el top 50 en la fecha " + fecha);
+                    System.out.println("\nDesea ver el timpo de ejecucion y memoria consumida? \n 1- Si \n 2- No");
+                    int opcion7 = sc.nextInt();
+                    if(opcion7==1) {
+                        long memoryAfter = getUsedMemory();
+                        manageContarArtista(fecha,artista, totalTime, memoryBefore, memoryAfter);
+                    }
                 }
                 if(volver(sc)==1){
                     menu(spoti);
@@ -350,9 +352,23 @@ public class Spotify {
                 Date fechaInicio = spoti.askFecha(sc);
                 System.out.println("Ingrese la fecha de fin del rango que quiere consultar (YYYY-MM-DD):");
                 Date fechaFin = spoti.askFecha(sc);
+
+                long totalTime1 = 0;
+                long memoryBefore1 = getUsedMemory();
+                long startIterTime1 = System.nanoTime();
                 int cantidad = spoti.contarCancionesTempo(sc, tempo1,tempo2,fechaInicio,fechaFin);
+
+                long endTime1 = System.nanoTime();
+                long iterExecutionTime1 = endTime1 - startIterTime1;
+                totalTime1 += iterExecutionTime1;
                 if(cantidad!=-1) {
                     System.out.println("La cantidad de canciones con un tempo entre " + tempo1 + " y " + tempo2 + " entre las fechas " + fechaInicio + " y " + fechaFin + " es: " + cantidad);
+                    System.out.println("\nDesea ver el timpo de ejecucion y memoria consumida? \n 1- Si \n 2- No");
+                    int opcion7 = sc.nextInt();
+                    if(opcion7==1) {
+                        long memoryAfter1 = getUsedMemory();
+                        manageContarCancionesTempo(tempo1, tempo2, fechaInicio, fechaFin, totalTime1, memoryBefore1, memoryAfter1);
+                    }
                 }
                 int vol = volver(sc);
                 if(vol==1){
