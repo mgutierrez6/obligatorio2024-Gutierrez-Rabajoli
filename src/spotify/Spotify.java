@@ -39,7 +39,7 @@ public class Spotify {
                 MyList<Song> topCanciones = cancionesPais.inOrderValue();
 
                 // Iteraciones para calcular el promedio de tiempo de ejecución
-                for (int p = 0; p < iterations; p++) {
+                for (int iter = 0; iter < iterations; iter++) {
                     long startIterTime = System.nanoTime();
 
                     System.out.println("Top 10 canciones en el " + pais + " en la " + fecha + " es:");
@@ -217,9 +217,14 @@ public class Spotify {
         long totalTime = 0;
         long memoryBefore = getUsedMemory();
 
+
+
         int veces = 0;
         if (fechas.contains(fecha)) {
             HashTable<String, BinarySearchTree<Integer, Song>> paises = fechas.search(fecha);
+
+            for (int iter = 0; iter < iterations; iter++) {
+                long startIterTime = System.nanoTime();
 
             if (paises != null) {
                 for (int i = 0; i < paises.size(); i++) {
@@ -246,6 +251,21 @@ public class Spotify {
                     }
                 }
             }
+
+                long endIterTime = System.nanoTime();
+                long iterExecutionTime = endIterTime - startIterTime;
+                totalTime += iterExecutionTime;
+            }
+
+            System.out.println("\nDesea ver el timpo de ejecucion y memoria consumida? \n 1- Si \n 2- No");
+            int opcion = sc.nextInt();
+            if(opcion==1){
+                long averageTime = totalTime / iterations;  // Cálculo del tiempo promedio de ejecución
+                // Impresión de memoria y tiempo promedio
+                long memoryAfter = getUsedMemory();
+                printMemoryAndTime(memoryBefore, memoryAfter, totalTime, averageTime);
+            }
+
         }else {
             System.out.println("No se encontraron datos para la fecha: " + fecha);
             return -1;
@@ -270,24 +290,27 @@ public class Spotify {
 
         boolean paso=false;
         if(tempo2!=0) {
-            for (int i = 0; i < fechas.size(); i++) {
-                if (fechas.get(i) != null) {
-                    Date fechaActual = fechas.get(i).getKey();
-                    if (fechaActual.compareTo(fechaInicio) >= 0 && fechaActual.compareTo(fechaFin) <= 0) {
-                        HashTable<String, BinarySearchTree<Integer, Song>> paises = fechas.search(fechaActual);
-                        if (paises != null) {
-                            for (int j = 0; j < paises.size(); j++) {
-                                NodeHash<String, BinarySearchTree<Integer, Song>> nodoPais = paises.get(j);
-                                if (nodoPais != null) {
-                                    BinarySearchTree<Integer, Song> cancionesPais = nodoPais.getValue();
-                                    if (cancionesPais != null) {
-                                        MyList<Song> canciones = cancionesPais.inOrderValue();
-                                        for (int k = 0; k < canciones.size(); k++) {
-                                            Song cancion = canciones.get(k);
-                                            double tempo = cancion.getTempo();
-                                            if (tempo >= tempo1 && tempo <= tempo2) {
-                                                cantidad++;
-                                                paso = true;
+            for (int iter = 0; iter < iterations; iter++) {
+                long startIterTime = System.nanoTime();
+                for (int i = 0; i < fechas.size(); i++) {
+                    if (fechas.get(i) != null) {
+                        Date fechaActual = fechas.get(i).getKey();
+                        if (fechaActual.compareTo(fechaInicio) >= 0 && fechaActual.compareTo(fechaFin) <= 0) {
+                            HashTable<String, BinarySearchTree<Integer, Song>> paises = fechas.search(fechaActual);
+                            if (paises != null) {
+                                for (int j = 0; j < paises.size(); j++) {
+                                    NodeHash<String, BinarySearchTree<Integer, Song>> nodoPais = paises.get(j);
+                                    if (nodoPais != null) {
+                                        BinarySearchTree<Integer, Song> cancionesPais = nodoPais.getValue();
+                                        if (cancionesPais != null) {
+                                            MyList<Song> canciones = cancionesPais.inOrderValue();
+                                            for (int k = 0; k < canciones.size(); k++) {
+                                                Song cancion = canciones.get(k);
+                                                double tempo = cancion.getTempo();
+                                                if (tempo >= tempo1 && tempo <= tempo2) {
+                                                    cantidad++;
+                                                    paso = true;
+                                                }
                                             }
                                         }
                                     }
@@ -296,12 +319,26 @@ public class Spotify {
                         }
                     }
                 }
-            }
-            if (!paso){
-                System.out.println("No se encontraron datos para las fechas dadas");
-                return -1;
-            }
-        }else{
+                if (!paso){
+                    System.out.println("No se encontraron datos para las fechas dadas");
+                    return -1;
+                }
+
+            long endIterTime = System.nanoTime();
+            long iterExecutionTime = endIterTime - startIterTime;
+            totalTime += iterExecutionTime;
+        }
+
+        System.out.println("\nDesea ver el timpo de ejecucion y memoria consumida? \n 1- Si \n 2- No");
+        int opcion = sc.nextInt();
+        if(opcion==1){
+            long averageTime = totalTime / iterations;  // Cálculo del tiempo promedio de ejecución
+            // Impresión de memoria y tiempo promedio
+            long memoryAfter = getUsedMemory();
+            printMemoryAndTime(memoryBefore, memoryAfter, totalTime, averageTime);
+        }
+
+    }else{
             System.out.println("No se encontraron datos para las fechas dadas");
             return -1;
         }
