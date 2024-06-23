@@ -67,7 +67,6 @@ public class HashTableImpl <K,V> implements HashTable<K,V>{
         }
     }
 
-    //CAMBIAR
     @Override
     public boolean contains(K key) {
         return getNodePosi(getHash(key),0,key)!=-1; //true si existe
@@ -87,23 +86,6 @@ public class HashTableImpl <K,V> implements HashTable<K,V>{
         this.table[posi].setValue(newValue);
     }
 
-//    public int getNodePosi(int posi, int iter, K key){
-//        NodeHash<K,V> node = this.table[posi];
-//        if(node!=null && node.getKey().equals(key)) {
-//            return posi;
-//        }else if(iter==capacity) {
-//            return -1;
-//        }else if (posi==(capacity-1)) {
-//            posi=0;
-//            iter++;
-//            return getNodePosi(posi,iter,key);
-//        }else{
-//            posi++;
-//            iter++;
-//            return getNodePosi(posi,iter,key);
-//        }
-//    }
-
     public int getNodePosi(int posi, int iter, K key){
         NodeHash<K,V> node = this.table[posi];
         if(node==null){
@@ -122,7 +104,6 @@ public class HashTableImpl <K,V> implements HashTable<K,V>{
             return getNodePosi(posi,iter,key);
         }
     }
-
 
     @Override
     public void remove(K key) {
