@@ -30,14 +30,12 @@ public class Song {
     private double tempo;
     private int time_signature;
 
-    public String setSpotify_id(String spotify_id) {
+    public void setSpotify_id(String spotify_id) {
         this.spotify_id = spotify_id;
-        return spotify_id;
     }
 
-    public String setName(String name) {
+    public void setName(String name) {
         this.name = name;
-        return name;
     }
 
     public void setArtist(MyList<Artist> artist) {

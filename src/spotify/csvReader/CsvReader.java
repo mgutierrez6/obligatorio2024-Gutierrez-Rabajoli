@@ -38,19 +38,19 @@ public class CsvReader {
 
                 Song song = new Song();
 
-                String id = song.setSpotify_id((dataIdYNombre[0]).replaceAll("\"", ""));
-                String nombre = song.setName((dataIdYNombre[1]).replaceAll("\"", ""));
-                song.setArtist(parseArtists(data[1].replaceAll("\"", "")));
+                song.setSpotify_id((dataIdYNombre[0]).replaceAll("\"", ""));
+                song.setName((dataIdYNombre[1]).replaceAll("\"", ""));
+                song.setArtist(cambiarArtists(data[1].replaceAll("\"", "")));
                 Integer daily = song.setDaily_rank(Integer.parseInt(data[2].replaceAll("\"", "")));
                 song.setDaily_movement(Integer.parseInt(data[3].replaceAll("\"", "")));
                 song.setWeekly_movement(Integer.parseInt(data[4].replaceAll("\"", "")));
-                String nombrePais = song.setCountry(data[5].isEmpty() ? "" : data[5].replaceAll("\"", ""));  // como los primeros paises son vacios, tenemos que chequear esa posibilidad
-                Date snapshot= song.setSnapshot_date(parseDate(data[6].replaceAll("\"", ""), dateFormat));
+                String nombrePais = song.setCountry(data[5].isEmpty() ? "General" : data[5].replaceAll("\"", ""));  // como los primeros paises son vacios, tenemos que chequear esa posibilidad
+                Date snapshot= song.setSnapshot_date(cambiarDate(data[6].replaceAll("\"", ""), dateFormat));
                 song.setPopularity(Integer.parseInt(data[7].replaceAll("\"", "")));
                 song.setIs_explicit(Boolean.parseBoolean(data[8].replaceAll("\"", "")));
                 song.setDuration_ms(Integer.parseInt(data[9].replaceAll("\"", "")));
                 song.setAlbum_name(data[10].replaceAll("\"", ""));
-                song.setAlbum_release_date(parseDate(data[11].replaceAll("\"", ""), dateFormat));
+                song.setAlbum_release_date(cambiarDate(data[11].replaceAll("\"", ""), dateFormat));
                 song.setDanceability(Double.parseDouble(data[12].replaceAll("\"", "")));
                 song.setEnergy(Double.parseDouble(data[13].replaceAll("\"", "")));
                 song.setKey(Integer.parseInt(data[14].replaceAll("\"", "")));
@@ -100,7 +100,7 @@ public class CsvReader {
         return fechas;
     }
 
-    private static MyList<Artist> parseArtists(String artistsString) {
+    private static MyList<Artist> cambiarArtists(String artistsString) {
         String[] artistNames = artistsString.split(",\\s*");
         MyList<Artist> artists = new MyLinkedListImpl<>();
         for (String name : artistNames) {
@@ -109,7 +109,7 @@ public class CsvReader {
         return artists;
     }
 
-    private static Date parseDate(String dateString, SimpleDateFormat dateFormat) throws ParseException {
+    private static Date cambiarDate(String dateString, SimpleDateFormat dateFormat) throws ParseException {
         if(!dateString.isEmpty()) { //hay release dates vacias, entonces tuvimos que chequear primero si eran vacias
             return dateFormat.parse(dateString);
         }
