@@ -18,10 +18,6 @@ import java.util.Scanner;
 
 public class Spotify {
     private HashTable<Date, HashTable<String, BinarySearchTree<Integer, Song>>> fechas;
-//    HashTable<Date,HashTable<String,Integer>> cancionesRepe;
-//    private HashTable<Date,BinarySearchTree<String,Integer>> cancionesRepe;
-//    private BinarySearchTree<String,Integer> cR;
-
 
     public Spotify() {
         CsvReader csv = new CsvReader();
@@ -67,10 +63,10 @@ public class Spotify {
                 long memoryAfter = getUsedMemory();
                 printMemoryAndTime(memoryBefore, memoryAfter, totalTime, averageTime);
             }else{
-                System.out.println("no se encontraron datos para el pais: " + pais);
+                System.out.println("No se encontraron datos para el pais: " + pais);
             }
         } else {
-            System.out.println("no se encontraton datos para la fecha: " + fecha);
+            System.out.println("No se encontraron datos para la fecha: " + fecha);
         }
     }
 
@@ -106,7 +102,7 @@ public class Spotify {
                 System.out.println((contador) + ") " + lista.get(i));
             }
         }else {
-            System.out.println("no se encontraton datos para la fecha: " + fecha2);
+            System.out.println("No se encontraron datos para la fecha: " + fecha2);
         }
     }
 
@@ -142,7 +138,7 @@ public class Spotify {
             }
         }
         if(!llega){
-            System.out.println("no se encontraton datos para las fechas: " + fecha3inicio + "y" + fecha3fin);
+            System.out.println("No se encontraron datos para las fechas: " + fecha3inicio + "y" + fecha3fin);
         }else {
             if(artistasRep.size()!=0) {
                 BinarySearchTree<Integer, String> ordenados3 = new BinarySearchTreeImpl<>();
@@ -193,7 +189,7 @@ public class Spotify {
                 }
             }
         }else {
-            System.out.println("no se encontraton datos para la fecha: " + fecha);
+            System.out.println("No se encontraron datos para la fecha: " + fecha);
             return -1;
         }
         return veces;
