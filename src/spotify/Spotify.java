@@ -278,6 +278,7 @@ public class Spotify {
             case 4:
                 System.out.println("Ingrese la fecha en la que quiere consultar (YYYY-MM-DD):");
                 Date fecha = spoti.askFecha(sc);
+                System.out.println("Ingrese el artista que quiere consultar:");
                 String artista = spoti.askArtista(sc);
                 int veces = spoti.contarArtista(fecha, artista);
                 if(veces!=-1) {
@@ -337,7 +338,6 @@ public class Spotify {
     }
 
     String askArtista(Scanner sc) {
-        System.out.println("Ingrese el artista que quiere consultar:");
         String artista = sc.nextLine();
         if (artista != null && !artista.isEmpty()) {
             return artista;
