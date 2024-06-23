@@ -259,13 +259,21 @@ public class Spotify {
                 Date fecha1 = spoti.askFecha(sc);
                 String pais = spoti.askPais(sc);
                 spoti.top10FechaYPais(fecha1, pais);
-                volver(sc,spoti);
+                if(volver(sc)==1){
+                    menu(spoti);
+                }else{
+                    break;
+                }
 
             case 2:
                 System.out.println("Ingrese la fecha en la que quiere consultar (YYYY-MM-DD):");
                 Date fecha2 = spoti.askFecha(sc);
                 spoti.top50CanRep(fecha2);
-                volver(sc,spoti);
+                if(volver(sc)==1){
+                    menu(spoti);
+                }else{
+                    break;
+                }
 
             case 3:
                 System.out.println("Ingrese la fecha de inicio del rango que quiere consultar (YYYY-MM-DD):");
@@ -273,7 +281,11 @@ public class Spotify {
                 System.out.println("Ingrese la fecha de fin del rango que quiere consultar (YYYY-MM-DD):");
                 Date fecha3fin = spoti.askFecha(sc);
                 spoti.top7Artistas(fecha3inicio,fecha3fin);
-                volver(sc, spoti);
+                if(volver(sc)==1){
+                    menu(spoti);
+                }else{
+                    break;
+                }
 
             case 4:
                 System.out.println("Ingrese la fecha en la que quiere consultar (YYYY-MM-DD):");
@@ -284,7 +296,11 @@ public class Spotify {
                 if(veces!=-1) {
                     System.out.println("El artista " + artista + " aparece " + veces + " veces en el top 50 en la fecha " + fecha);
                 }
-                volver(sc, spoti);
+                if(volver(sc)==1){
+                    menu(spoti);
+                }else{
+                    break;
+                }
 
             case 5:
                 System.out.println("Ingrese el tempo inicial del rango que quiere consultar:");
@@ -299,7 +315,12 @@ public class Spotify {
                 if(cantidad!=-1) {
                     System.out.println("La cantidad de canciones con un tempo entre " + tempo1 + " y " + tempo2 + " entre las fechas " + fechaInicio + " y " + fechaFin + " es: " + cantidad);
                 }
-                volver(sc, spoti);
+                if(volver(sc)==1){
+                    menu(spoti);
+                }else{
+                    break;
+                }
+
 
             default:
                 System.out.println("Opción inválida.");
@@ -318,12 +339,10 @@ public class Spotify {
         }
     }
 
-    void volver(Scanner sc, Spotify spoti){
+    int volver(Scanner sc){
         System.out.println("\nDesea volver a realizar una consulta? \n 1- Si \n 2- No");
         int opcion2 = sc.nextInt();
-        if(opcion2==1){
-            menu(spoti);
-        }
+        return opcion2;
     }
 
     String askPais(Scanner sc) {
