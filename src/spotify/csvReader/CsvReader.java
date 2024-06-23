@@ -8,7 +8,6 @@ import TADs.linkedlist.MyLinkedListImpl;
 import TADs.linkedlist.MyList;
 import spotify.entities.Artist;
 import spotify.entities.Song;
-import spotify.Spotify;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -20,20 +19,20 @@ import java.util.Date;
 
 public class CsvReader {
 
-    public HashTable<Date, HashTable<String, BinarySearchTree<Integer,Song>>> readSongsFromCsv(String filePath) {
+    public HashTable<Date, HashTable<String, BinarySearchTree<Integer,Song>>> readSongsFromCsv(String archivo) {
 
         HashTable<Date, HashTable<String, BinarySearchTree<Integer,Song>>> fechas =  new HashTableImpl<>(208);
 
-        String line;
-        String csvSplitBy = "\",\""; // al abrir el archivo csv en intellij se ve que se le agregan comillas, entones queda: "spotify_id,""name"",""artists"" y decidimos que se separe cuando hayan [,""] , de esa forma, si hay una coma en cualquier parte de una cancion, no la separe
+        String lineaActual;
+        String separador = "\",\""; // al abrir el archivo csv en intellij se ve que se le agregan comillas, entones queda: "spotify_id,""name"",""artists"" y decidimos que se separe cuando hayan [,""] , de esa forma, si hay una coma en cualquier parte de una cancion, no la separe
 
-        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(archivo))) {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
             br.readLine(); // saltea la primera linea
 
-            while ((line = br.readLine()) != null) {
-                String[] data = line.split(csvSplitBy);
+            while ((lineaActual = br.readLine()) != null) {
+                String[] data = lineaActual.split(separador);
                 String[] dataIdYNombre = data[0].split(",\""); // en data[0] obtengo "spotify_id,""name"" todo junto entonces quiero separar por ," en vez de ","
 
 
