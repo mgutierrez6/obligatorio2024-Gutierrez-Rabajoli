@@ -186,11 +186,11 @@ public class Spotify {
     }
 
     public int contarArtista(Scanner sc,Date fecha, String artista) {
-        long totalTime = 0;
-        long memoryBefore = getUsedMemory();
+//        long totalTime = 0;
+//        long memoryBefore = getUsedMemory();
 
         int veces = 0;
-        long startIterTime = System.nanoTime();
+//        long startIterTime = System.nanoTime();
         if (fechas.contains(fecha)) {
             HashTable<String, BinarySearchTree<Integer, Song>> paises = fechas.search(fecha);
 
@@ -219,15 +219,15 @@ public class Spotify {
                     }
                 }
             }
-            long endTime = System.nanoTime();
-            long iterExecutionTime = endTime - startIterTime;
-            totalTime += iterExecutionTime;
-            System.out.println("\nDesea ver el timpo de ejecucion y memoria consumida? \n 1- Si \n 2- No");
-            int opcion = sc.nextInt();
-            if(opcion==1){
-                long memoryAfter = getUsedMemory();
-                manageContarArtista(fecha,artista, totalTime, memoryBefore,memoryAfter);
-            }
+//            long endTime = System.nanoTime();
+//            long iterExecutionTime = endTime - startIterTime;
+//            totalTime += iterExecutionTime;
+//            System.out.println("\nDesea ver el timpo de ejecucion y memoria consumida? \n 1- Si \n 2- No");
+//            int opcion = sc.nextInt();
+//            if(opcion==1){
+//                long memoryAfter = getUsedMemory();
+//                manageContarArtista(fecha,artista, totalTime, memoryBefore,memoryAfter);
+//            }
         }else {
             System.out.println("No se encontraron datos para la fecha: " + fecha);
             return -1;
@@ -236,12 +236,7 @@ public class Spotify {
     }
 
     public int contarCancionesTempo(Scanner sc,double tempo1, double tempo2,Date fechaInicio, Date fechaFin){
-
-        long totalTime = 0;
-        long memoryBefore = getUsedMemory();
-
         int cantidad = 0;
-
         if (tempo1>tempo2){
             double tempo = tempo1;
             tempo1 = tempo2;
@@ -251,7 +246,6 @@ public class Spotify {
 
         boolean paso=false;
         if(tempo2!=0) {
-            long startIterTime = System.nanoTime();
             for (int i = 0; i < fechas.size(); i++) {
                 if (fechas.get(i) != null) {
                     Date fechaActual = fechas.get(i).getKey();
@@ -282,17 +276,6 @@ public class Spotify {
             if (!paso){
                 System.out.println("No se encontraron datos para las fechas dadas");
                 return -1;
-            }else {
-
-                long endIterTime = System.nanoTime();
-                long iterExecutionTime = endIterTime - startIterTime;
-                totalTime += iterExecutionTime;
-                System.out.println("\nDesea ver el timpo de ejecucion y memoria consumida? \n 1- Si \n 2- No");
-                int opcion = sc.nextInt();
-                if (opcion == 1) {
-                    long memoryAfter = getUsedMemory();
-                    manageContarCancionesTempo(tempo1,tempo2,fechaInicio,fechaFin,totalTime,memoryBefore,memoryAfter);
-                }
             }
 
         }else{
