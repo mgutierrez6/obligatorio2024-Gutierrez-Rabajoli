@@ -23,8 +23,6 @@ public class CsvReader {
     public HashTable<Date, HashTable<String, BinarySearchTree<Integer,Song>>> readSongsFromCsv(String filePath) {
 
         HashTable<Date, HashTable<String, BinarySearchTree<Integer,Song>>> fechas =  new HashTableImpl<>(208);
-//        HashTable<Date,HashTable<String,Integer>> cancionesRepe = new HashTableImpl<>(208);
-//        HashTable<Date,HashTable<String,Integer>> artistasRepe = new HashTableImpl<>(208);
 
         String line;
         String csvSplitBy = "\",\""; // al abrir el archivo csv en intellij se ve que se le agregan comillas, entones queda: "spotify_id,""name"",""artists"" y decidimos que se separe cuando hayan [,""] , de esa forma, si hay una coma en cualquier parte de una cancion, no la separe

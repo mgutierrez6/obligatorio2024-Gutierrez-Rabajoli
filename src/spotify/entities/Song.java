@@ -147,7 +147,4 @@ public class Song {
         return tempo;
     }
 
-    public String getSpotify_id() {
-        return spotify_id;
-    }
 }

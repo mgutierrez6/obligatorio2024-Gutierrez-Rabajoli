@@ -386,16 +386,6 @@ public class Spotify {
         System.out.println("Tiempo de ejecución total de la consulta: " + executionTime + " nanosegundos");
         System.out.println("Tiempo de ejecución promedio: " + promedio + " nanosegundos");
     }
-
-    public HashTable<Date, HashTable<String, BinarySearchTree<Integer, Song>>> getFechas() {
-        return fechas;
-    }
-
-    public void setFechas(HashTable<Date, HashTable<String, BinarySearchTree<Integer, Song>>> fechas) {
-        this.fechas = fechas;
-    }
-
-
 }
 
 
