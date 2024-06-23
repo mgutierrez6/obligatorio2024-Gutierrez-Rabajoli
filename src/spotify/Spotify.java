@@ -39,7 +39,7 @@ public class Spotify {
                 MyList<Song> topCanciones = cancionesPais.inOrderValue();
 
                 // Iteraciones para calcular el promedio de tiempo de ejecución
-                for (int i = 0; i < iterations; i++) {
+                for (int p = 0; p < iterations; p++) {
                     long startIterTime = System.nanoTime();
 
                     System.out.println("Top 10 canciones en el " + pais + " en la " + fecha + " es:");
