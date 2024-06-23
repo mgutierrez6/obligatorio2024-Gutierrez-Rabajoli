@@ -100,26 +100,8 @@ public class CsvReader {
             i.printStackTrace();
         }
 
-//        spoti.setFechas(fechas);
-////        spoti.setCancionesRepetidas(cancionesRepe);
-////        spoti.setcR(arbolRepe);
-//        spoti.setCancionesRepetidas(cancionesRepe);
         return fechas;
     }
-
-//    private static HashTable<Date,HashTable<String,Integer>> verRepe(HashTable<Date,HashTable<String,Integer>> hash, Date snapshot, String nombre){
-//        if(!hash.contains(snapshot)){
-//            HashTable<String,Integer> repes = new HashTableImpl<>(51);
-//            repes.put(nombre,1);
-//            hash.put(snapshot, repes);
-//        } else if (!hash.search(snapshot).contains(nombre)) {
-//            hash.search(snapshot).put(nombre,1);
-//        }else {
-//            HashTable<String,Integer> repes = hash.search(snapshot);
-//            int value= repes.search(nombre)+1;
-//            repes.changeValue(nombre,value);
-//        }
-//    }
 
     private static MyList<Artist> parseArtists(String artistsString) {
         String[] artistNames = artistsString.split(",\\s*");

@@ -113,6 +113,8 @@ public class Spotify {
     public void top7Artistas(Date fecha3inicio, Date fecha3fin){
         HashTable<String, Integer> artistasRep = new HashTableImpl<>(300);
 
+        boolean llega = false;
+
         for (int k = 0; k < fechas.size(); k++) {
             if (fechas.get(k) != null) {
                 Date fechaAct = fechas.get(k).getKey();
@@ -131,6 +133,7 @@ public class Spotify {
                                         int value = artistasRep.search(nombre) + 1;
                                         artistasRep.changeValue(nombre, value);
                                     }
+                                    llega=true;
                                 }
                             }
                         }
@@ -138,18 +141,21 @@ public class Spotify {
                 }
             }
         }
-
-        if(artistasRep.size()!=0) {
-            BinarySearchTree<Integer, String> ordenados3 = new BinarySearchTreeImpl<>();
-            for (int i = 0; i < artistasRep.size(); i++) {
-                NodeHash<String, Integer> nodo = artistasRep.get(i);
-                if (nodo != null) {
-                    ordenados3.insert(nodo.getValue(), nodo.getKey());
+        if(!llega){
+            System.out.println("no se encontraton datos para las fechas: " + fecha3inicio + "y" + fecha3fin);
+        }else {
+            if(artistasRep.size()!=0) {
+                BinarySearchTree<Integer, String> ordenados3 = new BinarySearchTreeImpl<>();
+                for (int i = 0; i < artistasRep.size(); i++) {
+                    NodeHash<String, Integer> nodo = artistasRep.get(i);
+                    if (nodo != null) {
+                        ordenados3.insert(nodo.getValue(), nodo.getKey());
+                    }
                 }
-            }
-            MyList<String> lista3 = ordenados3.inOrderValue();
-            for (int i = (lista3.size() - 1); i > (lista3.size() - 8); i--) {
-                System.out.println(lista3.get(i));
+                MyList<String> lista3 = ordenados3.inOrderValue();
+                for (int i = (lista3.size() - 1); i > (lista3.size() - 8); i--) {
+                    System.out.println(lista3.get(i));
+                }
             }
         }
     }
