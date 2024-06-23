@@ -67,7 +67,7 @@ public class Spotify {
                 long memoryAfter = getUsedMemory();
                 printMemoryAndTime(memoryBefore, memoryAfter, totalTime, averageTime);
             }else{
-                System.out.println("no se encontraron datos para el pais" + pais);
+                System.out.println("no se encontraron datos para el pais: " + pais);
             }
         } else {
             System.out.println("no se encontraton datos para la fecha: " + fecha);
@@ -311,16 +311,14 @@ public class Spotify {
     }
 
     Date askFecha(Scanner sc) {
-        //System.out.println("Ingrese la fecha en la que quiere consultar:");
         String fechaSC = sc.nextLine();
         try {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             return dateFormat.parse(fechaSC);
         } catch (ParseException e) {
             System.out.println("Fecha inválida. Inténtelo de nuevo.");
-            askFecha(sc);
+            return askFecha(sc);
         }
-        return null;
     }
 
     void volver(Scanner sc, Spotify spoti){
@@ -338,9 +336,8 @@ public class Spotify {
             return pais;
         } else {
             System.out.println("País inválido. Inténtelo de nuevo.");
-            askPais(sc);
+            return askPais(sc);
         }
-        return null;
     }
 
     String askArtista(Scanner sc) {
@@ -350,26 +347,23 @@ public class Spotify {
             return artista;
         } else {
             System.out.println("Artista inválido. Inténtelo de nuevo.");
-            askArtista(sc);
+            return askArtista(sc);
         }
-        return null;
     }
 
     double askTempo(Scanner sc){
-        //System.out.println("Ingrese el tempo que quiere consultar:");
         String tempo = sc.nextLine();
         if (tempo != null){
             try{
                 return Double.parseDouble(tempo);
             }catch (NumberFormatException e){
                 System.out.println("Tempo invalido. Inténtelo de nuevo.");
-                askTempo(sc);
+                return askTempo(sc);
             }
         }else {
             System.out.println("Tempo invalido. Inténtelo de nuevo.");
-            askTempo(sc);
+            return askTempo(sc);
         }
-        return 0;
     }
 
     private static long getUsedMemory() {
