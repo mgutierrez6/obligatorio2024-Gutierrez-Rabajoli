@@ -24,7 +24,7 @@ public class Spotify {
         this.fechas = csv.readSongsFromCsv("data.csv");;
     }
 
-    public void top10FechaYPais(Date fecha, String pais) {
+    public void top10FechaYPais(Scanner sc, Date fecha, String pais) {
 
         int iterations = 10; // Número de iteraciones para calcular el promedio
         long totalTime = 0;
@@ -41,27 +41,33 @@ public class Spotify {
                 // Iteraciones para calcular el promedio de tiempo de ejecución
                 for (int i = 0; i < iterations; i++) {
                     long startIterTime = System.nanoTime();
+
+                    System.out.println("Top 10 canciones en el " + pais + " en la " + fecha + " es:");
+                    for (int i = 0; i < 10; i++) {
+                        Song cancion = topCanciones.get(i);
+                        StringBuilder artistas = new StringBuilder();  //para construir la cadena que contiene los nombres de los artistas.
+                        for (int j = 0; j < cancion.getArtist().size(); j++) {
+                            artistas.append(cancion.getArtist().get(j).getName());
+                            if (j < cancion.getArtist().size() - 1) {
+                                artistas.append(", ");
+                            }
+                        }
+                        System.out.println((i + 1) + ". " + cancion.getName() + " - " + artistas.toString());
+                    }
                     long endTime = System.nanoTime();
                     long iterExecutionTime = endTime - startIterTime;
                     totalTime += iterExecutionTime;
                 }
 
-                System.out.println("Top 10 canciones en el " + pais + " en la " + fecha + " es:");
-                for (int i = 0; i < 10; i++) {
-                    Song cancion = topCanciones.get(i);
-                    StringBuilder artistas = new StringBuilder();  //para construir la cadena que contiene los nombres de los artistas.
-                    for (int j = 0; j < cancion.getArtist().size(); j++) {
-                        artistas.append(cancion.getArtist().get(j).getName());
-                        if (j < cancion.getArtist().size() - 1) {
-                            artistas.append(", ");
-                        }
-                    }
-                    System.out.println((i + 1) + ". " + cancion.getName() + " - " + artistas.toString());
+                System.out.println("\nDesea ver el timpo de ejecucion y memoria consumida? \n 1- Si \n 2- No");
+                int opcion = sc.nextInt();
+                if(opcion==1){
+                    long averageTime = totalTime / iterations;  // Cálculo del tiempo promedio de ejecución
+                    // Impresión de memoria y tiempo promedio
+                    long memoryAfter = getUsedMemory();
+                    printMemoryAndTime(memoryBefore, memoryAfter, totalTime, averageTime);
                 }
-                long averageTime = totalTime / iterations;  // Cálculo del tiempo promedio de ejecución
-                // Impresión de memoria y tiempo promedio
-                long memoryAfter = getUsedMemory();
-                printMemoryAndTime(memoryBefore, memoryAfter, totalTime, averageTime);
+
             }else{
                 System.out.println("No se encontraron datos para el pais: " + pais);
             }
@@ -70,94 +76,146 @@ public class Spotify {
         }
     }
 
-    public void top50CanRep(Date fecha2){
+    public void top50CanRep(Scanner sc,Date fecha2){
+
+        int iterations = 10; // Número de iteraciones para calcular el promedio
+        long totalTime = 0;
+        long memoryBefore = getUsedMemory();
+
+
+
         HashTable<String,Integer> cancionesRepe=new HashTableImpl<>(300);
         if(fechas.contains(fecha2)) {
             HashTable<String, BinarySearchTree<Integer, Song>> paises2 = fechas.search(fecha2);
-            for (int i = 0; i < paises2.size(); i++) {
-                if (paises2.get(i) != null) {
-                    MyList<Song> can = paises2.get(i).getValue().inOrderValue();
-                    for (int j = 0; j < can.size(); j++) {
-                        String nombre = can.get(j).getName();
-                        if (!cancionesRepe.contains(nombre)) {
-                            cancionesRepe.put(nombre, 1);
-                        } else {
-                            int value = cancionesRepe.search(nombre) + 1;
-                            cancionesRepe.changeValue(nombre, value);
+            //para medir lo pedido:
+            for (int iter = 0; iter < iterations; iter++) {
+                long startIterTime = System.nanoTime();
+
+                for (int i = 0; i < paises2.size(); i++) {
+                    if (paises2.get(i) != null) {
+                        MyList<Song> can = paises2.get(i).getValue().inOrderValue();
+                        for (int j = 0; j < can.size(); j++) {
+                            String nombre = can.get(j).getName();
+                            if (!cancionesRepe.contains(nombre)) {
+                                cancionesRepe.put(nombre, 1);
+                            } else {
+                                int value = cancionesRepe.search(nombre) + 1;
+                                cancionesRepe.changeValue(nombre, value);
+                            }
                         }
                     }
                 }
-            }
-            BinarySearchTree<Integer, String> ordenados = new BinarySearchTreeImpl<>();
-            for (int i = 0; i < (cancionesRepe.size() - 1); i++) {
-                NodeHash<String, Integer> nodo = cancionesRepe.get(i);
-                if (nodo != null) {
-                    ordenados.insert(nodo.getValue(), nodo.getKey());
+                BinarySearchTree<Integer, String> ordenados = new BinarySearchTreeImpl<>();
+                for (int i = 0; i < (cancionesRepe.size() - 1); i++) {
+                    NodeHash<String, Integer> nodo = cancionesRepe.get(i);
+                    if (nodo != null) {
+                        ordenados.insert(nodo.getValue(), nodo.getKey());
+                    }
                 }
+                MyList<String> lista = ordenados.inOrderValue();
+                int contador = 0;
+                for (int i = (lista.size() - 1); i > (lista.size() - 6); i--) {
+                    contador++;
+                    System.out.println((contador) + ") " + lista.get(i));
+                }
+
+                long endIterTime = System.nanoTime();
+                long iterExecutionTime = endIterTime - startIterTime;
+                totalTime += iterExecutionTime;
             }
-            MyList<String> lista = ordenados.inOrderValue();
-            int contador = 0;
-            for (int i = (lista.size() - 1); i > (lista.size() - 6); i--) {
-                contador++;
-                System.out.println((contador) + ") " + lista.get(i));
+
+            System.out.println("\nDesea ver el timpo de ejecucion y memoria consumida? \n 1- Si \n 2- No");
+            int opcion = sc.nextInt();
+            if(opcion==1){
+                long averageTime = totalTime / iterations;  // Cálculo del tiempo promedio de ejecución
+                // Impresión de memoria y tiempo promedio
+                long memoryAfter = getUsedMemory();
+                printMemoryAndTime(memoryBefore, memoryAfter, totalTime, averageTime);
             }
+
         }else {
             System.out.println("No se encontraron datos para la fecha: " + fecha2);
         }
     }
 
-    public void top7Artistas(Date fecha3inicio, Date fecha3fin){
+    public void top7Artistas(Scanner sc,Date fecha3inicio, Date fecha3fin){
+
+        int iterations = 10; // Número de iteraciones para calcular el promedio
+        long totalTime = 0;
+        long memoryBefore = getUsedMemory();
+
         HashTable<String, Integer> artistasRep = new HashTableImpl<>(300);
 
         boolean llega = false;
 
-        for (int k = 0; k < fechas.size(); k++) {
-            if (fechas.get(k) != null) {
-                Date fechaAct = fechas.get(k).getKey();
-                if (fechaAct.compareTo(fecha3inicio) >= 0 && fechaAct.compareTo(fecha3fin) <= 0) {
-                    HashTable<String, BinarySearchTree<Integer, Song>> paises3 = fechas.search(fechaAct);
-                    for (int i = 0; i < paises3.size(); i++) {
-                        if (paises3.get(i) != null) {
-                            MyList<Song> can = paises3.get(i).getValue().inOrderValue();
-                            for (int j = 0; j < can.size(); j++) {
-                                MyList<Artist> artistas = can.get(j).getArtist();
-                                for (int h = 0; h < artistas.size(); h++) {
-                                    String nombre = artistas.get(h).getName();
-                                    if (!artistasRep.contains(nombre)) {
-                                        artistasRep.put(nombre, 1);
-                                    } else {
-                                        int value = artistasRep.search(nombre) + 1;
-                                        artistasRep.changeValue(nombre, value);
+        for (int iter = 0; iter < iterations; iter++) {
+            long startIterTime = System.nanoTime();
+
+            for (int k = 0; k < fechas.size(); k++) {
+                if (fechas.get(k) != null) {
+                    Date fechaAct = fechas.get(k).getKey();
+                    if (fechaAct.compareTo(fecha3inicio) >= 0 && fechaAct.compareTo(fecha3fin) <= 0) {
+                        HashTable<String, BinarySearchTree<Integer, Song>> paises3 = fechas.search(fechaAct);
+                        for (int i = 0; i < paises3.size(); i++) {
+                            if (paises3.get(i) != null) {
+                                MyList<Song> can = paises3.get(i).getValue().inOrderValue();
+                                for (int j = 0; j < can.size(); j++) {
+                                    MyList<Artist> artistas = can.get(j).getArtist();
+                                    for (int h = 0; h < artistas.size(); h++) {
+                                        String nombre = artistas.get(h).getName();
+                                        if (!artistasRep.contains(nombre)) {
+                                            artistasRep.put(nombre, 1);
+                                        } else {
+                                            int value = artistasRep.search(nombre) + 1;
+                                            artistasRep.changeValue(nombre, value);
+                                        }
+                                        llega=true;
                                     }
-                                    llega=true;
                                 }
                             }
                         }
                     }
                 }
             }
-        }
-        if(!llega){
-            System.out.println("No se encontraron datos para las fechas: " + fecha3inicio + "y" + fecha3fin);
-        }else {
-            if(artistasRep.size()!=0) {
-                BinarySearchTree<Integer, String> ordenados3 = new BinarySearchTreeImpl<>();
-                for (int i = 0; i < artistasRep.size(); i++) {
-                    NodeHash<String, Integer> nodo = artistasRep.get(i);
-                    if (nodo != null) {
-                        ordenados3.insert(nodo.getValue(), nodo.getKey());
+
+            if(!llega){
+                System.out.println("No se encontraron datos para las fechas: " + fecha3inicio + "y" + fecha3fin);
+            }else {
+                if(artistasRep.size()!=0) {
+                    BinarySearchTree<Integer, String> ordenados3 = new BinarySearchTreeImpl<>();
+                    for (int i = 0; i < artistasRep.size(); i++) {
+                        NodeHash<String, Integer> nodo = artistasRep.get(i);
+                        if (nodo != null) {
+                            ordenados3.insert(nodo.getValue(), nodo.getKey());
+                        }
+                    }
+                    MyList<String> lista3 = ordenados3.inOrderValue();
+                    for (int i = (lista3.size() - 1); i > (lista3.size() - 8); i--) {
+                        System.out.println(lista3.get(i));
                     }
                 }
-                MyList<String> lista3 = ordenados3.inOrderValue();
-                for (int i = (lista3.size() - 1); i > (lista3.size() - 8); i--) {
-                    System.out.println(lista3.get(i));
-                }
             }
+            long endIterTime = System.nanoTime();
+            long iterExecutionTime = endIterTime - startIterTime;
+            totalTime += iterExecutionTime;
+        }
+
+        System.out.println("\nDesea ver el timpo de ejecucion y memoria consumida? \n 1- Si \n 2- No");
+        int opcion = sc.nextInt();
+        if(opcion==1){
+            long averageTime = totalTime / iterations;  // Cálculo del tiempo promedio de ejecución
+            // Impresión de memoria y tiempo promedio
+            long memoryAfter = getUsedMemory();
+            printMemoryAndTime(memoryBefore, memoryAfter, totalTime, averageTime);
         }
     }
 
 
-    public int contarArtista(Date fecha, String artista) {
+    public int contarArtista(Scanner sc,Date fecha, String artista) {
+
+        int iterations = 10; // Número de iteraciones para calcular el promedio
+        long totalTime = 0;
+        long memoryBefore = getUsedMemory();
 
         int veces = 0;
         if (fechas.contains(fecha)) {
@@ -195,7 +253,12 @@ public class Spotify {
         return veces;
     }
 
-    public int contarCancionesTempo(double tempo1, double tempo2,Date fechaInicio, Date fechaFin){
+    public int contarCancionesTempo(Scanner sc,double tempo1, double tempo2,Date fechaInicio, Date fechaFin){
+
+        int iterations = 10; // Número de iteraciones para calcular el promedio
+        long totalTime = 0;
+        long memoryBefore = getUsedMemory();
+
         int cantidad = 0;
 
         if (tempo1>tempo2){
@@ -258,7 +321,7 @@ public class Spotify {
                 System.out.println("Ingrese la fecha en la que quiere consultar (YYYY-MM-DD):");
                 Date fecha1 = spoti.askFecha(sc);
                 String pais = spoti.askPais(sc);
-                spoti.top10FechaYPais(fecha1, pais);
+                spoti.top10FechaYPais(sc, fecha1, pais);
                 if(volver(sc)==1){
                     menu(spoti);
                 }else{
@@ -268,7 +331,7 @@ public class Spotify {
             case 2:
                 System.out.println("Ingrese la fecha en la que quiere consultar (YYYY-MM-DD):");
                 Date fecha2 = spoti.askFecha(sc);
-                spoti.top50CanRep(fecha2);
+                spoti.top50CanRep(sc, fecha2);
                 if(volver(sc)==1){
                     menu(spoti);
                 }else{
@@ -280,7 +343,7 @@ public class Spotify {
                 Date fecha3inicio = spoti.askFecha(sc);
                 System.out.println("Ingrese la fecha de fin del rango que quiere consultar (YYYY-MM-DD):");
                 Date fecha3fin = spoti.askFecha(sc);
-                spoti.top7Artistas(fecha3inicio,fecha3fin);
+                spoti.top7Artistas(sc, fecha3inicio,fecha3fin);
                 if(volver(sc)==1){
                     menu(spoti);
                 }else{
@@ -292,7 +355,7 @@ public class Spotify {
                 Date fecha = spoti.askFecha(sc);
                 System.out.println("Ingrese el artista que quiere consultar:");
                 String artista = spoti.askArtista(sc);
-                int veces = spoti.contarArtista(fecha, artista);
+                int veces = spoti.contarArtista(sc, fecha, artista);
                 if(veces!=-1) {
                     System.out.println("El artista " + artista + " aparece " + veces + " veces en el top 50 en la fecha " + fecha);
                 }
@@ -311,11 +374,12 @@ public class Spotify {
                 Date fechaInicio = spoti.askFecha(sc);
                 System.out.println("Ingrese la fecha de fin del rango que quiere consultar (YYYY-MM-DD):");
                 Date fechaFin = spoti.askFecha(sc);
-                int cantidad = spoti.contarCancionesTempo(tempo1,tempo2,fechaInicio,fechaFin);
+                int cantidad = spoti.contarCancionesTempo(sc, tempo1,tempo2,fechaInicio,fechaFin);
                 if(cantidad!=-1) {
                     System.out.println("La cantidad de canciones con un tempo entre " + tempo1 + " y " + tempo2 + " entre las fechas " + fechaInicio + " y " + fechaFin + " es: " + cantidad);
                 }
-                if(volver(sc)==1){
+                int vol = volver(sc);
+                if(vol==1){
                     menu(spoti);
                 }else{
                     break;
